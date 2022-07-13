@@ -12,24 +12,25 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/test")
+@RequestMapping("/api/test/user")
+@PreAuthorize("hasRole('USER')")
 public class TestControllerUser {
     @Autowired
     NewsService newsService;
 
-    @GetMapping("/user")
-    @PreAuthorize("hasRole('USER')")
+    @GetMapping()
     public ResponseEntity<List<News>> getList(){
-        return ResponseEntity.ok(newsService.findAll());
+        return ResponseEntity.ok(newsService.getListByStatus(true));
     }
 
-    @GetMapping("/user/{id}")
-    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getDetail(@PathVariable Integer id) {
         Optional<News> optionalNews = newsService.findById(id);
         if (!optionalNews.isPresent()) {
             ResponseEntity.badRequest().build();
         }
+        optionalNews.get().setViews(optionalNews.get().getViews() + 1);
+        newsService.save(optionalNews.get());
         return ResponseEntity.ok(optionalNews.get());
     }
 }

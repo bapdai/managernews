@@ -13,35 +13,34 @@ import java.util.Optional;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/test")
+@PreAuthorize("hasRole('MODERATOR')")
 public class TestControllerMod {
 
     @Autowired
     NewsService newsService;
 
     @GetMapping("/mod")
-    @PreAuthorize("hasRole('MODERATOR')")
     public ResponseEntity<List<News>> getList(){
         return ResponseEntity.ok(newsService.findAll());
     }
 
     @GetMapping("/mod/{id}")
-    @PreAuthorize("hasRole('MODERATOR')")
     public ResponseEntity<?> getDetail(@PathVariable Integer id) {
         Optional<News> optionalNews = newsService.findById(id);
         if (!optionalNews.isPresent()) {
             ResponseEntity.badRequest().build();
         }
+        optionalNews.get().setViews(optionalNews.get().getViews() + 1);
+        newsService.save(optionalNews.get());
         return ResponseEntity.ok(optionalNews.get());
     }
 
     @PostMapping("/mod")
-    @PreAuthorize("hasRole('MODERATOR')")
     public ResponseEntity<News> create(@RequestBody News news){
         return ResponseEntity.ok(newsService.save(news));
     }
 
     @PutMapping("/mod/{id}")
-    @PreAuthorize("hasRole('MODERATOR')")
     public ResponseEntity<News> update(@PathVariable Integer id, @RequestBody News news){
         Optional<News> optionalNews = newsService.findById(id);
         if ((!optionalNews.isPresent())){

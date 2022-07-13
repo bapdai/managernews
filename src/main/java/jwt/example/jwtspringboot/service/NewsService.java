@@ -29,4 +29,8 @@ public class NewsService {
     public void deleteById(Integer id){
         newsRepository.deleteById(id);
     }
+
+    public List<News> getListByStatus(boolean status){
+        return newsRepository.findAllByStatus(status);
+    }
 }

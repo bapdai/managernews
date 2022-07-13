@@ -18,7 +18,7 @@ public class TestController {
 
     @GetMapping("/all")
     public ResponseEntity<List<News>> getList(){
-        return ResponseEntity.ok(newsService.findAll());
+        return ResponseEntity.ok(newsService.getListByStatus(true));
     }
 
 }
