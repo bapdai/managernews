@@ -17,6 +17,7 @@ public class News {
     private Integer id;
     private String title;
     private String description;
+    private String img;
     private String content;
     private Integer views = 1;
     private Boolean status;
