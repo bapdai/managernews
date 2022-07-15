@@ -33,4 +33,7 @@ public class NewsService {
     public List<News> getListByStatus(boolean status){
         return newsRepository.findAllByStatus(status);
     }
+    public Optional<News> getListByIdAndStatus(Integer id, boolean status){
+        return newsRepository.findAllByIdAndStatus(id, status);
+    }
 }

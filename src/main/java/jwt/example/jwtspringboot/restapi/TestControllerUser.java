@@ -25,7 +25,7 @@ public class TestControllerUser {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getDetail(@PathVariable Integer id) {
-        Optional<News> optionalNews = newsService.findById(id);
+        Optional<News> optionalNews = newsService.getListByIdAndStatus(id, true);
         if (!optionalNews.isPresent()) {
             ResponseEntity.badRequest().build();
         }
